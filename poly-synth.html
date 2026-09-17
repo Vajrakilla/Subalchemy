@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polyphonic Analog Synth | Sub Alchemy</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">SUB ALCHEMY</a>
+        <nav>
+            <a href="index.html">Projects</a>
+            <a href="#">Resume (PDF)</a>
+        </nav>
+    </header>
+
+    <main class="project-content">
+        <div class="project-header">
+            <h1>4-Voice Polyphonic Analog Synthesizer</h1>
+            <div class="project-meta">KiCad | 0402 SMD | LTspice | Analog Design</div>
+        </div>
+
+        <div class="placeholder-img">
+            [Insert High-Res Photo of the Assembled 4-Layer KiCad Board]
+        </div>
+
+        <h3>The Goal</h3>
+        <p>To design, route, and assemble a fully analog 4-voice polyphonic synthesizer from scratch. This required moving beyond basic breadboards and designing a robust, manufacturable printed circuit board capable of handling sensitive analog audio signals without cross-talk or severe noise.</p>
+
+        <h3>The Tech Stack</h3>
+        <ul>
+            <li><strong>PCB Design:</strong> KiCad (4-Layer Board, separating signal, ground, and power planes)</li>
+            <li><strong>Simulation:</strong> LTspice for verifying analog oscillator stability and filter responses prior to fabrication.</li>
+            <li><strong>Assembly:</strong> Hand-soldered using a microscope and hot air/iron, working with components down to 0402 surface-mount (SMD) sizes.</li>
+            <li><strong>Core Components:</strong> Discrete op-amps, analog oscillators, and precision resistors/capacitors.</li>
+        </ul>
+
+        <div class="placeholder-img" style="height: 300px;">
+            [Insert Screenshot: LTspice Simulation Next to KiCad Routing]
+        </div>
+
+        <h3>The Hardest Part (Lessons Learned)</h3>
+        <p>One of the biggest challenges in this project was dealing with signal integrity and noise on the analog ground plane. Because multiple voices were operating simultaneously, early revisions introduced unexpected cross-talk. By moving to a 4-layer stackup and carefully isolating the analog ground from the power rails in KiCad, I was able to drastically reduce the noise floor. Debugging the final assembled board with an oscilloscope allowed me to verify the theoretical LTspice simulations against the real-world physical hardware.</p>
+
+    </main>
+
+    <footer>
+        <p><a href="index.html" style="color: inherit;">&larr; Back to Projects</a></p>
+    </footer>
+
+</body>
+</html>
