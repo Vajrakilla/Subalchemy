@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" stroke="black" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Top edge (Diode D3 pointing Right) -->
+  <line x1="10" y1="10" x2="42" y2="10" />
+  <polygon points="42,2 42,18 58,10" fill="black" stroke="none" />
+  <line x1="58" y1="2" x2="58" y2="18" />
+  <line x1="58" y1="10" x2="90" y2="10" />
+
+  <!-- Right edge (Diode D4 pointing Down) -->
+  <line x1="90" y1="10" x2="90" y2="42" />
+  <polygon points="82,42 98,42 90,58" fill="black" stroke="none" />
+  <line x1="82" y1="58" x2="98" y2="58" />
+  <line x1="90" y1="58" x2="90" y2="90" />
+
+  <!-- Bottom edge (Diode D2 pointing Right) -->
+  <line x1="10" y1="90" x2="42" y2="90" />
+  <polygon points="42,82 42,98 58,90" fill="black" stroke="none" />
+  <line x1="58" y1="82" x2="58" y2="98" />
+  <line x1="58" y1="90" x2="90" y2="90" />
+
+  <!-- Left edge (Diode D1 pointing Down) -->
+  <line x1="10" y1="10" x2="10" y2="42" />
+  <polygon points="2,42 18,42 10,58" fill="black" stroke="none" />
+  <line x1="2" y1="58" x2="18" y2="58" />
+  <line x1="10" y1="58" x2="10" y2="90" />
+
+  <!-- Op-Amp Triangle -->
+  <polygon points="25,20 25,80 82,50" fill="white" />
+
+  <!-- Op-Amp Inputs and Output -->
+  <line x1="10" y1="35" x2="25" y2="35" />
+  <line x1="10" y1="65" x2="25" y2="65" />
+  <line x1="82" y1="50" x2="90" y2="50" />
+
+  <!-- Inner Circle (Voltage Source) -->
+  <circle cx="44" cy="50" r="16" fill="white" />
+  
+  <!-- Plus symbol -->
+  <line x1="44" y1="39" x2="44" y2="47" />
+  <line x1="40" y1="43" x2="48" y2="43" />
+  
+  <!-- Minus symbol -->
+  <line x1="40" y1="57" x2="48" y2="57" />
+</svg>
