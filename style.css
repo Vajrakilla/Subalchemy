@@ -1,8 +1,8 @@
 :root {
-    --bg-color: #eef2f5; /* Bluish grey background */
+    --bg-color: #d8e1e8; /* Darker bluish grey */
     --text-color: #2b2b2b;
     --text-light: #555555;
-    --border-color: #d1d9e0;
+    --border-color: #c5d1dc;
     --card-bg: #ffffff;
 }
 
@@ -22,7 +22,7 @@ body {
 
 /* Header & Navigation */
 header {
-    max-width: 800px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 40px 0;
     display: flex;
@@ -53,7 +53,7 @@ nav a:hover {
 
 /* Main Content */
 main {
-    max-width: 800px;
+    max-width: 1100px;
     margin: 60px auto;
 }
 
@@ -76,11 +76,11 @@ main {
     margin: 0 auto;
 }
 
-/* Vertical Scroll Layout for Homepage Cards */
+/* Horizontal Layout for Homepage Cards */
 .projects-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 50px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
 }
 
 .project-card {
@@ -197,7 +197,7 @@ main {
 
 /* Footer */
 footer {
-    max-width: 800px;
+    max-width: 1100px;
     margin: 80px auto 40px auto;
     padding-top: 20px;
     border-top: 2px solid var(--border-color);
