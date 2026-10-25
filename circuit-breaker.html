@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>High-Voltage Circuit Breaker | Sub Alchemy</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=4">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 <body>
@@ -24,26 +24,80 @@
         </div>
 
         <h3>Power Board Design</h3>
-        <p>Designing a solid-state switching architecture capable of handling high voltage loads. The design is split between a power board and a dedicated gate drive PCB to maintain signal integrity safely.</p>
+        <p>This is an RLC solid-state circuit breaker prototype for a modular solid-state circuit breaker system. It is designed for 400&ndash;500 V and modeled for a 100 A fault current. The active components are the seven gate driver boards, discussed below, which are controlled by an Arduino Nano for testing. The premise is that a large current is injected into the circuit using a capacitor bank while the circuit is powered. The current is then forced into another capacitor bank path by turning on two silicon-carbide cascode FETs. As the capacitor voltage charges, the current in the inductive path at the source end of the circuit depletes. When the current reaches zero, the path to the capacitor bank is closed off to the rest of the circuit. The capacitor is then discharged through a resistor, completely isolated from the rest of the circuit. The gate drives turn off to allow normal function through the power board.</p>
 
         <div class="photo-stack">
-            <img src="photos/circuit_breaker/powerboard_angle1.jpg" alt="Power Board Angle 1">
-            <img src="photos/circuit_breaker/powerboard_angle2.jpg" alt="Power Board Angle 2">
-            <img src="photos/circuit_breaker/powerboard_angle3.jpg" alt="Power Board Angle 3">
+            <img src="photos/circuit_breaker/power_board_flow.png" alt="Power Board Flow">
+        </div>
+
+        <p>Starting from an equivalent circuit provided by the lab, I derived the RLC equations and used Python sweeps over L, C and the parallel resistance to find an inductor/capacitor pair in which the inductor current is zero when the capacitor voltage is at its peak. This allows for zero-current switching (ZCS), which reduces switching losses and stress on the switches. As can be seen in the LTspice plots below, the capacitor voltage (V(N006, N007)) is at its maximum when the inductor current (I(L1)) crosses zero. In simulation the current at the crossing is on the order of microamps rather than exactly zero, but the switching loss should be small because the breaker switches once per event rather than continuously, as in a buck, boost, or combination converter.</p>
+
+        <div class="photo-stack">
+            <img src="photos/circuit_breaker/ltspice_results.png" alt="LTspice Simulation Results">
+        </div>
+
+        <p>The KiCad PCB layout was relatively straightforward. It is a 4-layer board with minimal traces and large copper planes. I used planes to keep loop inductance low: extra inductance from traces would shift the inductor's zero-crossing time away from the simulation. The parallel planes also add some parasitic capacitance, which I have not yet measured or checked against the timing.</p>
+
+        <div class="photo-stack">
             <img src="photos/circuit_breaker/power_board/power_board.png" alt="Power Board Layout">
         </div>
 
-        <h3>Gate Drive & Troubleshooting</h3>
-        <p>Physical layout constraints required creative problem solving. I altered capacitor footprints and manually patched traces on the driver board to ensure the gate drivers could safely activate the high-voltage switches.</p>
+        <p>As with all first tries, something usually goes wrong. When constructing the PCB in KiCad I had to make a fair portion of my own footprint libraries. For one, I didn't take into account tolerances for the component leads for both the 16 capacitors and power resistor. I also entered the wrong footprint sizes for the capacitors. It was quite a shock when the board came in and not only did the capacitor leads not fit, but the capacitors themselves couldn't fit next to each other. I came up with the idea to alternate them on the top and bottom of the board, as vertical orientation doesn't matter. It turned out to be a good workaround, as the caps acted as natural standoffs for the board. To get the caps soldered to the board, I Dremeled the casing away from the leads, then lap-soldered smaller-gauge wires onto each of the 64 capacitor leads as close to the capacitor body as possible. After a long evening, the efforts turned out to work well! (And saved me from major disappointment from my research professor.)</p>
 
         <div class="photo-stack">
-            <img src="photos/circuit_breaker/fixing_traces_in_driver.jpg" alt="Fixing Traces in Driver">
-            <img src="photos/circuit_breaker/inocmplete_driver.jpg" alt="Incomplete Driver">
-            <img src="photos/circuit_breaker/powerboard_with_incomplete_driver.jpg" alt="Power Board with Incomplete Driver">
-            <img src="photos/circuit_breaker/capacitors_footprint_alters.jpg" alt="Capacitor Footprint Alters">
+            <img src="photos/circuit_breaker/power_board/capacitors_footprint_alters.jpg" alt="Capacitor Footprint Alters">
+            <img src="photos/circuit_breaker/power_board/powerboard_angle1.jpg" alt="Power Board Angle 1">
+            <img src="photos/circuit_breaker/power_board/powerboard_angle2.jpg" alt="Power Board Angle 2">
+            <img src="photos/circuit_breaker/power_board/powerboard_angle3.jpg" alt="Power Board Angle 3">
+        </div>
+
+        <h3>Gate Drive &amp; Troubleshooting</h3>
+        <p>The gate drive board came with its own array of problems. I had used an application circuit configuration incorrectly, soldered 100 Ohm 0603 resistors onto a path requiring 10 Ohm, and used an inverted footprint for an NPN transistor. Troubleshooting involved better understanding the application circuit, tracing the signal paths with a DMM to find voltage discrepancies, and lots of advice from my advisor and a PhD student. Fixing the problems posed their own challenges. For the transistor, I bent the pins, stood it up as if it had feet, and soldered magnet wire from the transistor to the pad. I also had to lift pins from one of the ICs and use magnet wire to tie them to connector pins.</p>
+
+        <div class="photo-stack">
             <img src="photos/circuit_breaker/gate_drive/gatedrive_allLayers.png" alt="Gate Drive All Layers">
             <img src="photos/circuit_breaker/gate_drive/gatedrive_frontLayers.png" alt="Gate Drive Front Layers">
             <img src="photos/circuit_breaker/gate_drive/gatedrive_backLayers.png" alt="Gate Drive Back Layers">
+            <img src="photos/circuit_breaker/gate_drive/inocmplete_driver.jpg" alt="Incomplete Driver">
+            <img src="photos/circuit_breaker/gate_drive/powerboard_with_incomplete_driver.jpg" alt="Power Board with Incomplete Driver">
+        </div>
+
+        <p>Seven gate-drive boards were completed after these corrections. The photos below show the changes.</p>
+
+        <div class="photo-stack">
+            <img src="photos/circuit_breaker/gate_drive/fixing_traces_in_driver.jpg" alt="Fixing Traces in Driver">
+            <img src="photos/circuit_breaker/gate_drive/fixed_powerside.jpg" alt="Power Side Fix">
+            <img src="photos/circuit_breaker/gate_drive/fixed_deviceside.jpg" alt="Device Side Fix 1">
+            <img src="photos/circuit_breaker/gate_drive/fixed_deviceside2.jpg" alt="Device side Fix 2">
+            <img src="photos/circuit_breaker/gate_drive/fixed_deviceside3.jpg" alt="Device side Fix 3">
+        </div>
+
+        <p>All gate drivers were tested using a function generator and oscilloscope to verify the correct output voltages. After all were tested individually, they were slotted onto the power board. Differential probes were connected to the transistor pairs under test. The power board was then connected to a load and power supply. Switch pairs were activated using a push-button and an Arduino Nano on a breadboard circuit. The load was connected to the oscilloscope using standard probes. A 5 V source into a 1.6 Ohm load was fed into the power circuit with two gates held high. An output of 3 A confirmed the power board is able to pass current to a load. This test also confirmed the action of the switches while powered with the power board. It was run at 5 V, well below the 400&ndash;500 V design voltage.</p>
+
+        <p>Not photographed was an earlier test to verify whether the Arduino could activate the gate drivers. Initially it was verified by powering LEDs in a sequence proportional to the voltage necessary to turn on the drivers. The test was applied once more to a single driver board and multiple LEDs.</p>
+
+        <div class="photo-stack">
+            <img src="photos/circuit_breaker/power_board/IMG_8525.jpg" alt="Complete Power Board Angle 1">
+            <img src="photos/circuit_breaker/power_board/IMG_8526.jpg" alt="Complete Powerboard Angle 2">
+            <img src="photos/circuit_breaker/power_board/IMG_8534.jpg" alt="Complete Powerboard Angle 3">
+        </div>
+
+        <h3>Status &amp; Planned Operating Sequence</h3>
+        <p>As of October 20, 2026, the power board and gate drivers are complete, but I have not had the chance to begin full testing, and I may not be able to test the board. The power board can pass current to the load, and the gate drivers can turn the cascode FETs on and off. A perfboard was soldered together for the Arduino button control to improve the stability of the circuit.</p>
+
+        <p>The next phase is to complete the code for the switching sequence. The timing of the switching procedure will be determined using LTspice. By considering the series inductor, capacitor, and load, the time of the first inductor current zero-crossing will dictate when to isolate the current in the capacitive path. The planned sequence is as follows:</p>
+
+        <ol>
+            <li>Power is supplied to the power board using two DC sources, one for the gate drives and the other for the power path.</li>
+            <li>The bulk capacitor bank is charged via the power path's power supply. Two of the switches are held off to stop the flow through the board. This in effect acts as a gate at the input, allowing the capacitor bank to charge. The charging capacitor bank will give us our necessary instant surge of current to test the breaker performance.</li>
+            <li>Once the capacitor bank is sufficiently and safely charged, the DC source is shut off. Of course, the return path of the DC source is never connected, as we don't want the current to feed back into the source return.</li>
+            <li>The central capacitor path is now opened, allowing the input capacitor bank to discharge into the inductor and charge the capacitors which will contain the large current.</li>
+            <li>Once the inductor current is zero, the switches will close and contain the voltage in the capacitor bank.</li>
+            <li>The path will then open to discharge the capacitors into the power resistor, and the circuit will turn on to its normal function state.</li>
+        </ol>
+
+        <div class="photo-stack">
+            <img src="photos/circuit_breaker/gate_drive/arduino_switch.jpg" alt="Arduino Switch Control">
         </div>
 
     </main>
