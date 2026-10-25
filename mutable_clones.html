@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutable Instruments Eurorack Clones | Sub Alchemy</title>
+    <link rel="stylesheet" href="style.css?v=4">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">SUB ALCHEMY</a>
+        <nav>
+            <a href="index.html">Projects</a>
+            <a href="Resume_updated.pdf" target="_blank">Resume (PDF)</a>
+        </nav>
+    </header>
+
+    <main class="project-content">
+        <div class="project-header">
+            <h1>Mutable Instruments Eurorack Clones</h1>
+            <div class="project-meta">0402 SMD | Stencil &amp; Solder Paste | Hot-Plate Reflow | 3D Printing | Debug</div>
+        </div>
+
+        <h3>Overview</h3>
+        <p>I assembled three Eurorack modules based on Mutable Instruments designs: Veils, Blades and Marbles. The PCBs are purchased clones of the Mutable Instruments boards and the firmware was provided, so my work was the assembly, the tooling, and the debugging. I stopped testing in early 2026, and none of the three is fully working.</p>
+
+        <div class="photo-stack">
+            <img src="photos/smd/smd_components_soldered.jpg" alt="SMD Components Soldered">
+            <img src="photos/smd/solder_paste_applied.jpg" alt="Solder Paste Applied">
+            <img src="photos/smd/smd_solderPasteDispenser_housing.jpg" alt="Vacuum Stencil Holder Housing">
+            <video controls autoplay loop muted>
+                <source src="photos/smd/Impeller_function.MOV" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <h3>Assembly Process</h3>
+        <p><strong>Stencil holder.</strong> I built a cordless vacuum holder for the solder paste stencil. An impeller inside pulls the stencil straight down onto the PCB so it doesn't bend at the sides; the video above shows it running. It uses a drone motor, a flight controller, a micro Pi and LiPo batteries. I built it from open-source CAD models, a YouTube video, a BOM, and poorly documented wiring, and each PCB size needed its own custom PCB holder. To print accurate parts I had to get my Ender 3 dimensionally accurate. The full print took about 30 hours and several iterations.</p>
+
+        <p><strong>Assembly.</strong> I had the stencil manufactured and applied the solder paste through it. I placed every component by hand with tweezers and reflowed the boards on a hot plate. I reworked problem areas with a soldering iron and hot air, and soldered all of the through-hole parts myself.</p>
+
+        <h3>Debugging Status</h3>
+        <ul>
+            <li><strong>Veils:</strong> Channels 3 and 4 showed unexpected resonance and clipping. I traced it to two reversed diodes and corrected one. The other flew off the board and was lost, so I was never able to tell whether those two diodes were the only fault.</li>
+            <li><strong>Blades:</strong> Audio passes through, but the filtering does not work. Voltages were in the normal range at every IC. With a square wave into the left-hand filter, the signal came out as a triangle wave while the probe was on the IC. I did not find the cause.</li>
+            <li><strong>Marbles:</strong> Not tested. It needed firmware flashed, and I had not worked out how to test it before the pots were soldered on.</li>
+        </ul>
+
+    </main>
+
+    <footer>
+        <p><a href="index.html" style="color: inherit;">&larr; Back to Projects</a></p>
+    </footer>
+
+</body>
+</html>
